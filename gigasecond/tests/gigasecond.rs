@@ -1,5 +1,5 @@
-extern crate chrono;
-extern crate gigasecond;
+use gigasecond;
+
 use chrono::{TimeZone, Utc};
 
 #[test]
