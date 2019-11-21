@@ -1,4 +1,4 @@
-use rayon::prelude::*;
+use rayon::prelude::{IntoParallelIterator, ParallelIterator};
 use std::collections::HashSet;
 
 pub fn find(sum: u32) -> HashSet<[u32; 3]> {
