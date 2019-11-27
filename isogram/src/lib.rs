@@ -1,15 +1,10 @@
+use std::collections::HashSet;
+
 pub fn check(candidate: &str) -> bool {
-    let vec = candidate
+    let mut set: HashSet<char> = HashSet::new();
+    candidate
         .to_lowercase()
         .chars()
-        .filter(|c| c.is_alphanumeric())
-        .collect::<Vec<char>>();
-    let mut dedup_vec: Vec<char> = vec.clone();
-    dedup_vec.sort();
-    dedup_vec.dedup();
-    if dedup_vec.len() == vec.len() {
-        true
-    } else {
-        false
-    }
+        .filter(char::is_ascii_alphabetic)
+        .all(|c| set.insert(c))
 }
