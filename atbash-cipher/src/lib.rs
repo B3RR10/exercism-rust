@@ -1,15 +1,8 @@
-static ALPHABET: &[char] = &[
-    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-    't', 'u', 'v', 'w', 'x', 'y', 'z',
-];
+use std::char;
 
 /// "Encipher" with the Atbash cipher.
 pub fn encode(plain: &str) -> String {
-    plain
-        .to_lowercase()
-        .chars()
-        .filter(|c| c.is_alphanumeric())
-        .map(|c| reverse(c))
+    reverse_ascii_string(plain)
         .enumerate()
         .fold(String::new(), |acc, (i, c)| {
             if i != 0 && i % 5 == 0 {
@@ -22,17 +15,16 @@ pub fn encode(plain: &str) -> String {
 
 /// "Decipher" with the Atbash cipher.
 pub fn decode(cipher: &str) -> String {
-    cipher
-        .chars()
-        .filter(|c| c.is_alphanumeric())
-        .map(|c| reverse(c))
-        .collect::<String>()
+    reverse_ascii_string(cipher).collect::<String>()
 }
 
-fn reverse(c: char) -> char {
-    ALPHABET
-        .iter()
-        .zip(ALPHABET.iter().rev())
-        .find_map(|(a, b)| if a == &c { Some(b.to_owned()) } else { None })
-        .unwrap_or(c)
+fn reverse_ascii_string<'a>(input: &'a str) -> impl Iterator<Item = char> + 'a {
+    input.chars().filter(char::is_ascii_alphanumeric).map(|c| {
+        if c.is_ascii_alphabetic() {
+            char::from_u32('z' as u32 - c.to_ascii_lowercase() as u32 + 'a' as u32)
+                .expect("Can't convert to char")
+        } else {
+            c
+        }
+    })
 }
