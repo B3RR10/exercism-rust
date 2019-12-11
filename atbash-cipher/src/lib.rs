@@ -1,4 +1,5 @@
 use std::char;
+use std::iter;
 
 /// "Encipher" with the Atbash cipher.
 pub fn encode(plain: &str) -> String {
@@ -14,11 +15,10 @@ pub fn decode(cipher: &str) -> String {
 }
 
 fn format(i: usize, c: char) -> impl Iterator<Item = char> {
-    if i != 0 && i % 5 == 0 {
-        Some(' ').into_iter().chain(Some(c))
-    } else {
-        Some(c).into_iter().chain(None)
-    }
+    Some(' ')
+        .filter(|_| i != 0 && i % 5 == 0)
+        .into_iter()
+        .chain(iter::once(c))
 }
 
 fn reverse_ascii_string<'a>(input: &'a str) -> impl Iterator<Item = char> + 'a {
