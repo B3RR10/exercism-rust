@@ -16,6 +16,8 @@ pub trait Planet {
 
 macro_rules! planet_impl {
     ($planet:ident, $time_in_secs:literal) => {
+        pub struct $planet;
+
         impl Planet for $planet {
             fn years_during(d: &Duration) -> f64 {
                 (d.0 as f64) * (1f64 / (60f64 * 60f64 * 24f64 * 365.25 * $time_in_secs))
@@ -23,15 +25,6 @@ macro_rules! planet_impl {
         }
     };
 }
-
-pub struct Mercury;
-pub struct Venus;
-pub struct Earth;
-pub struct Mars;
-pub struct Jupiter;
-pub struct Saturn;
-pub struct Uranus;
-pub struct Neptune;
 
 planet_impl!(Mercury, 0.2408467);
 planet_impl!(Venus, 0.61519726);
